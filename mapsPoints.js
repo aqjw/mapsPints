@@ -1,5 +1,4 @@
-
-function MapsPoints( center, points, around )
+function MapsPoint( center, points, around )
 {
 	this.center = center;
 	this.points = points;
@@ -9,7 +8,11 @@ function MapsPoints( center, points, around )
 	this._outside = [];
 }
 
-MapsPoints.prototype.run = function()
+/**
+ * run processing
+ * @return class object
+ */
+MapsPoint.prototype.run = function()
 {
 	for (var i = 0; i < this.points.length; i++)
 	{
@@ -24,15 +27,27 @@ MapsPoints.prototype.run = function()
 	return this;
 };
 
-MapsPoints.prototype.getOutside = function(){
+/**	
+ * get points outside radius
+ * @return array
+ */
+MapsPoint.prototype.getOutside = function(){
 	return this._outside;
 };
 
-MapsPoints.prototype.getInside = function(){
+/**	
+ * get points inside radius
+ * @return array
+ */
+MapsPoint.prototype.getInside = function(){
 	return this._inside;
 };
 
-MapsPoints.prototype._mathAround = function( point )
+/**
+ * @param  object point
+ * @return integer distance
+ */
+MapsPoint.prototype._mathAround = function( point )
 {
 	function deg2rad(deg) {
 		return deg * (Math.PI/180)
@@ -54,15 +69,17 @@ MapsPoints.prototype._mathAround = function( point )
 
 
 
-
+/**
+ * for example
+ */
 function initMap()
 {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: {lat: -25.363, lng: 131.044}
-  });
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 12,
+		center: {lat: -25.363, lng: 131.044}
+	});
 
-
+	// example
 	var center = { lat: -25.363, lng: 131.044 };
 	var points = [
 		{ lat: -25.353, lng: 131.024 },
@@ -72,7 +89,6 @@ function initMap()
 		{ lat: -25.313, lng: 131.064 },
 		{ lat: -25.303, lng: 131.074 },
 	];
-	var m = new MapsPoints( center, points, 4000 );
 
 	// center Marker
 	new google.maps.Marker({
@@ -80,6 +96,12 @@ function initMap()
 		map: map,
 		title: 'Hello World!'
 	});
+
+	var m = new MapsPoint(
+		center, // center point
+		points, // points around
+		4000	// radius in m
+	);
 
 	// get points inside
 	points = m.run().getInside();
